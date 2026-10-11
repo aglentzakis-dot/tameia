@@ -52,8 +52,9 @@
 .kqb.call{background:color-mix(in srgb,var(--green) 16%,var(--card));border-color:color-mix(in srgb,var(--green) 45%,var(--line))}
 .kqb.sms{background:color-mix(in srgb,var(--accent) 14%,var(--card))}
 .kr .kn .kq{margin-top:4px}.kr .kn .kqb{width:28px;height:28px;font-size:13px}
-.kfs h4.kpk{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.kpick{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:5px 10px;font-weight:750;font-size:12.5px}
+.kfs h4.kpk{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.kpick{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--accent,#F2B632);background:color-mix(in srgb,var(--accent,#F2B632) 16%,var(--card));color:var(--ink);border-radius:12px;padding:8px 14px;font-weight:800;font-size:15.5px;line-height:1.2;min-height:44px}
+.kpick .kpi{font-size:22px;line-height:1}
 .kstale{border:1.5px solid color-mix(in srgb,#E0A400 60%,var(--line));background:color-mix(in srgb,#F2B632 16%,var(--card));border-radius:14px;padding:10px 12px;margin:0 0 10px;font-size:14px}
 .kstale button{margin-top:8px;width:100%}
 .ksubs{border:1.5px dashed var(--line);border-radius:14px;padding:10px 12px;margin-top:8px;font-size:13.5px}
@@ -95,12 +96,12 @@
       <div><label for="ka_floor">${T("Όροφος")}</label><input id="ka_floor" value="${esc(a.floor)}" placeholder="${T("π.χ. 1ος")}" autocomplete="off"></div></div>
       <div class="kfs"><h4>📐 ${T("Χιλιοστά")}</h4><div class="ksub">${KSH.map(([i,l])=>`<div><label for="ka_${i}">${T(l)}</label><input id="ka_${i}" inputmode="decimal" value="${esc(a.sh[i]||"")}" placeholder="‰"></div>`).join("")}</div>
         <p class="note">${T("Από τον πίνακα χιλιοστών της πολυκατοικίας. Αν τα αφήσεις κενά σε όλα τα διαμερίσματα, τα έξοδα μοιράζονται εξίσου.")}</p></div>
-      <div class="kfs"><h4 class="kpk">👤 ${T("Ιδιοκτήτης")}<button type="button" class="kpick" data-kpick="ka_o">📇 ${T("Από τις επαφές")}</button></h4>
+      <div class="kfs"><h4 class="kpk">👤 ${T("Ιδιοκτήτης")}<button type="button" class="kpick" data-kpick="ka_o"><span class="kpi">📱</span>${T("Από τις επαφές μου")}</button></h4>
         <label for="ka_on">${T("Όνομα")}</label><input id="ka_on" value="${esc(a.own.name||"")}" autocomplete="off">
         <div class="ksub" style="grid-template-columns:1fr 1fr"><div><label for="ka_op">${T("Κινητό")}</label><input id="ka_op" type="tel" inputmode="tel" value="${esc(a.own.phone||"")}" autocomplete="off"></div>
         <div><label for="ka_oe">${T("Ηλεκτρονικό ταχυδρομείο")}</label><input id="ka_oe" type="email" inputmode="email" value="${esc(a.own.email||"")}" autocomplete="off"></div></div></div>
       <label class="toggle" style="margin-top:6px"><input type="checkbox" id="ka_rent" ${a.rented?"checked":""}>🔑 ${T("Ενοικιάζεται")}</label>
-      <div class="kfs" id="ka_tenbox" ${a.rented?"":"hidden"}><h4 class="kpk">🔑 ${T("Ενοικιαστής και μισθωτήριο")}<button type="button" class="kpick" data-kpick="ka_t">📇 ${T("Από τις επαφές")}</button></h4>
+      <div class="kfs" id="ka_tenbox" ${a.rented?"":"hidden"}><h4 class="kpk">🔑 ${T("Ενοικιαστής και μισθωτήριο")}<button type="button" class="kpick" data-kpick="ka_t"><span class="kpi">📱</span>${T("Από τις επαφές μου")}</button></h4>
         <label for="ka_tn">${T("Όνομα")}</label><input id="ka_tn" value="${esc(a.ten.name||"")}" autocomplete="off">
         <div class="ksub" style="grid-template-columns:1fr 1fr"><div><label for="ka_tp">${T("Κινητό")}</label><input id="ka_tp" type="tel" inputmode="tel" value="${esc(a.ten.phone||"")}" autocomplete="off"></div>
         <div><label for="ka_te">${T("Ηλεκτρονικό ταχυδρομείο")}</label><input id="ka_te" type="email" inputmode="email" value="${esc(a.ten.email||"")}" autocomplete="off"></div></div>
