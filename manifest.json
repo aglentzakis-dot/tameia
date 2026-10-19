@@ -89,18 +89,6 @@
           "type": "image/png"
         }
       ]
-    },
-    {
-      "name": "📷 Φωτογραφία απόδειξης",
-      "short_name": "Απόδειξη",
-      "url": "./index.html?do=receipt",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
     }
   ]
 }
