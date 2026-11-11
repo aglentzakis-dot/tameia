@@ -18,3 +18,27 @@ const VO_N={μηδεν:0,ενα:1,ενας:1,μια:1,μία:1,δυο:2,δυο:2
 .vomic{width:84px;height:84px;border-radius:50%;border:0;background:var(--accent);font-size:38px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
 .vomic.on{animation:vopulse 1.2s infinite}@keyframes vopulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 70%,transparent)}100%{box-shadow:0 0 0 22px transparent}}
 .vost{font-weight:700;color:var(--muted);text-align:center;min-height:20px}`,document.head.appendChild(e)})();const VO_TR=()=>[T("έσοδο")];function voBookOk(e){try{return e==="personal"?!0:!(typeof bkCanOpen=="function"&&!bkCanOpen(e)||isXB(e)&&xbRaw(e).tpl==="central"||typeof proFor=="function"&&!proFor(e))}catch{return!0}}function voShortcut(){try{const e=new URLSearchParams(location.search),o=e.get("do");if(!o)return;history.replaceState(null,"",location.pathname+(e.get("lang")?"?lang="+e.get("lang"):"")),voBookOk(pBookId)||setBook("personal"),o==="voice"?voSheet("out"):o==="in"||o==="out"||o==="receipt"&&!(typeof RC_SHOW<"u"&&RC_SHOW)?pNewFlow(o==="in"?"in":"out"):o==="receipt"&&typeof rcSheet=="function"?rcSheet("out"):o==="sms"&&typeof atSmsSheet=="function"&&atSmsSheet("")}catch{}}window.addEventListener("load",()=>setTimeout(voShortcut,950)),(function(){if(typeof pEntryForm!="function")return;const e=pEntryForm;pEntryForm=function(o,t,n){const r=!o&&n&&n.__fresh&&String(n.amount||"").trim()!=="",c=e.apply(this,arguments);if(r){const d=($("#shTitle")||{}).textContent,a=()=>{try{if(($("#shTitle")||{}).textContent!==d||!$("#modal").classList.contains("open"))return;clearTimeout(sheetSnapT),sheetSnap=null,sheetDirty=!0;const i=$("#sSave");i&&(i.classList.remove("idle"),i.classList.add("pulseSave"))}catch{}};a(),setTimeout(a,0),setTimeout(a,350)}return c}})();
+
+/* 1.9.103: το πεδίο που γράφεις δεν κρύβεται ποτέ πίσω από τη μπάρα «Αποθήκευση / Επόμενο» ή το πληκτρολόγιο.
+   Αφού ανοίξει (ή αλλάξει) το πληκτρολόγιο, το παράθυρο κυλά ώστε όλο το πεδίο να φαίνεται πάνω από τη μπάρα.
+   Ισχύει σε κάθε φόρμα, και στις ερωτήσεις που ανοίγουν από πάνω (π.χ. «Πόσα εισπράχθηκαν», «Δεν φτάνουν τα μετρητά»). */
+(function(){
+  function isField(a){return a&&a.tagName&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!/^(checkbox|radio|hidden|button|submit)$/.test(a.type||"")}
+  function scroller(a){let p=a.parentElement;while(p&&p!==document.body){const cs=getComputedStyle(p);if(/(auto|scroll)/.test(cs.overflowY)&&p.scrollHeight>p.clientHeight+2)return p;p=p.parentElement}return null}
+  function overlays(){// οι ερωτήσεις πάνω από τη φόρμα κάθονται μέσα στο ορατό κομμάτι της οθόνης (πάνω από το πληκτρολόγιο)
+    const vv=window.visualViewport;["kAsk","tbCash"].forEach(id=>{const o=document.getElementById(id);if(!o)return;
+      if(vv){o.style.top=vv.offsetTop+"px";o.style.height=vv.height+"px";o.style.bottom="auto"}const c=o.firstElementChild;if(c)c.style.maxHeight=(vv?vv.height:innerHeight)-24+"px",c.style.overflowY="auto"})}
+  function fix(){overlays();const a=document.activeElement;if(!isField(a))return;const sc=scroller(a);if(!sc)return;
+    const vv=window.visualViewport,r=a.getBoundingClientRect(),sr=sc.getBoundingClientRect();
+    let bottom=Math.min(sr.bottom,vv?vv.offsetTop+vv.height:innerHeight);
+    ["kbBar","shFoot"].forEach(id=>{const x=document.getElementById(id);if(!x||x.hidden||!x.offsetHeight||getComputedStyle(x).display==="none")return;const xr=x.getBoundingClientRect();if(xr.top<bottom&&xr.bottom>sr.top+40)bottom=xr.top});
+    const top=Math.max(sr.top,vv?vv.offsetTop:0)+8,lim=bottom-10;
+    if(r.bottom>lim){// να φαίνεται και η ετικέτα πάνω από το πεδίο, αν χωρά
+      const room=lim-top,want=Math.min(r.height+34,room);sc.scrollTop+=r.bottom-lim+Math.max(0,(room-want)/3)}
+    else if(r.top<top)sc.scrollTop-=top-r.top+24}
+  let t1=0;const later=()=>{clearTimeout(t1);t1=setTimeout(fix,140)};
+  document.addEventListener("focusin",e=>{if(!isField(e.target))return;[120,380,750].forEach(ms=>setTimeout(fix,ms))},true);
+  if(window.visualViewport){visualViewport.addEventListener("resize",later);visualViewport.addEventListener("scroll",later)}
+  window.addEventListener("resize",later);
+  new MutationObserver(()=>{if(document.getElementById("kAsk")||document.getElementById("tbCash"))overlays()}).observe(document.body,{childList:true});
+})();
