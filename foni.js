@@ -42,3 +42,22 @@ const VO_N={μηδεν:0,ενα:1,ενας:1,μια:1,μία:1,δυο:2,δυο:2
   window.addEventListener("resize",later);
   new MutationObserver(()=>{if(document.getElementById("kAsk")||document.getElementById("tbCash"))overlays()}).observe(document.body,{childList:true});
 })();
+
+/* 1.9.104 — αλλαγή κατηγορίας/υποκατηγορίας σε κίνηση: το «Αποθήκευση» ανάβει αμέσως */
+(function(){
+  if(typeof pEntryForm!="function")return;
+  const orig=pEntryForm;
+  pEntryForm=function(t,e,n){
+    const r=orig.apply(this,arguments);
+    try{
+      const o=Object.assign({},t||{dir:e||"out",kind:null,sub:""},n||{});
+      const b=document.getElementById("shBody");
+      if(b&&document.getElementById("p_cat")&&!document.getElementById("p_kv")){
+        const h=document.createElement("input");h.type="hidden";h.id="p_kv";
+        h.value=[o.dir||"",o.kind||"",o.sub||""].join("|");b.appendChild(h);
+      }
+      setTimeout(()=>{try{sheetLive()}catch{}},160);
+    }catch{}
+    return r;
+  };
+})();
